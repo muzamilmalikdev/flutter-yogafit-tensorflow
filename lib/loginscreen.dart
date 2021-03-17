@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:yogafit/homescreen.dart';
+import 'package:yogafit/main.dart';
 import 'forgotpassword.dart';
 
 class loginscreen extends StatelessWidget {
@@ -87,7 +88,7 @@ class loginscreen extends StatelessWidget {
                           SizedBox(height: 40,),
                           GestureDetector( child : Text("Forget Password?", style: TextStyle(color: Colors.grey),),
                             onTap: () {
-                              Navigator.push(context,MaterialPageRoute (builder: (_) => homescreen() ));
+                              Navigator.push(context,MaterialPageRoute (builder: (_) => forgotpassword() ));
                             },
                           ),
 
@@ -103,7 +104,7 @@ class loginscreen extends StatelessWidget {
                             child: Center(
                               child: FlatButton(
                                 onPressed: (){
-                                  Navigator.push(context,MaterialPageRoute (builder: (_) => homescreen() ));
+                                  Navigator.push(context,MaterialPageRoute (builder: (_) => MyHomePage() ));
                                 },
                                 child: Text("Login", style: TextStyle(color: Colors.white),),
                               ),

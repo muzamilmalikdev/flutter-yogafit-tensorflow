@@ -32,6 +32,7 @@ class welcomescreen extends StatelessWidget {
                           borderRadius: BorderRadius.circular(50),
                           color: Colors.orange[900]
                       ),
+
                       child: Center(
                         child: FlatButton(
                           onPressed: (){
