@@ -1,8 +1,16 @@
+import 'dart:ui';
+import 'package:flutter/foundation.dart';
+import 'package:splashscreen/splashscreen.dart';
 import 'package:flutter/material.dart';
+import 'package:yogafit/category_card.dart';
 import 'loginscreen.dart';
 import 'welcomescreen.dart';
 import 'homescreen.dart';
 import 'package:yogafit/homescreen.dart';
+import 'package:animated_splash_screen/animated_splash_screen.dart';
+import 'exercisepage.dart';
+import 'package:yogafit/exercisepage.dart';
+
 void main(){
   runApp(MyApp());
 }
@@ -14,7 +22,7 @@ class MyApp extends StatelessWidget {
 
       home: welcomescreen(),
       routes: {
-        '/productPage' : (context)=>loginscreen(),
+        '/productPage' : (context)=> exercisepage(),
       },
     );
   }
@@ -38,7 +46,14 @@ class _MyHomePageState extends State<MyHomePage> {
               Container(
                 height: MediaQuery.of(context).size.height*0.43,
                 width: MediaQuery.of(context).size.width,
-                color: Colors.orange[500],
+                decoration: BoxDecoration(
+                  color: Colors.orange[300],
+                  image: DecorationImage(
+                    image: AssetImage("assets/undraw_pilates_gpdb.png"),
+                  )
+                ),
+
+
                 child: Container(
                   margin: EdgeInsets.only(right: 40, top: 20, bottom: 20),
                   alignment: Alignment.centerLeft,
@@ -91,10 +106,43 @@ class _MyHomePageState extends State<MyHomePage> {
                 child: GridView.count(crossAxisCount: 2,
                   childAspectRatio: 0.85,
                   children: <Widget>[
-                    categoryWidget('plank', "Plank"),
-                    categoryWidget('warrior', "Warrior"),
-                    categoryWidget('downdog2', "DownDog"),
-                    categoryWidget('tree', "Tree"),
+                     CategoryCard(
+                      title: "Tree",
+                      imagesrc: "assets/tree.png",
+                      press: () {
+
+                      },
+                    ),
+                    CategoryCard(
+                      title: "Plank",
+                      imagesrc: "assets/plank.png",
+                      press: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(builder: (context) {
+                            return exercisepage();
+                          }),
+                        );
+                      },
+                    ),
+                    CategoryCard(
+                      title: "Warrior",
+                      imagesrc: "assets/warrior.png",
+                      press: () {
+
+                      },
+                    ),
+                    CategoryCard(
+                      title: "DownDog",
+                      imagesrc: "assets/downdog2.png",
+                      press: () {
+
+                      },
+                    ),
+
+
+                    //categoryWidget('tree', "Tree"),
+
                   ],
                 ),
               ),

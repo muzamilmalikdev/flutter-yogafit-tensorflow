@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:yogafit/homescreen.dart';
 import 'package:yogafit/main.dart';
 import 'forgotpassword.dart';
+import 'registeruser.dart';
 
 class loginscreen extends StatelessWidget {
   @override
@@ -100,14 +101,31 @@ class loginscreen extends StatelessWidget {
                                 borderRadius: BorderRadius.circular(50),
                                 color: Colors.orange[900]
                             ),
-
                             child: Center(
+                              // ignore: deprecated_member_use
                               child: FlatButton(
                                 onPressed: (){
                                   Navigator.push(context,MaterialPageRoute (builder: (_) => MyHomePage() ));
                                 },
                                 child: Text("Login", style: TextStyle(color: Colors.white),),
                               ),
+                            ),
+
+                          ),
+                          SizedBox(height: 10,),
+                          Container(
+                            width: 250,
+                            margin: EdgeInsets.symmetric(horizontal:50),
+                            decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(50),
+                                color: Colors.yellow[800]
+                            ),
+                            child: FlatButton(
+                              onPressed: (){
+                                Navigator.push(context,MaterialPageRoute (builder: (_) => registeruser() ));
+                              },
+                              child: Text("Register", style: TextStyle(color: Colors.white),),
+
                             ),
                           )
                         ],
