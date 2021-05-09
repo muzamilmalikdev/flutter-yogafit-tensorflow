@@ -1,27 +1,62 @@
 import 'dart:ui';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/foundation.dart';
 import 'package:splashscreen/splashscreen.dart';
 import 'package:flutter/material.dart';
 import 'package:yogafit/category_card.dart';
+import 'package:yogafit/profilepage.dart';
+import 'package:yogafit/provider.dart';
 import 'loginscreen.dart';
 import 'welcomescreen.dart';
 import 'homescreen.dart';
 import 'package:yogafit/homescreen.dart';
 import 'package:animated_splash_screen/animated_splash_screen.dart';
 import 'exercisepage.dart';
+import 'package:camera/camera.dart';
 import 'package:yogafit/exercisepage.dart';
+import 'package:yogafit/virtualtrainer.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 
-void main(){
+
+final FirebaseAuth _firebaseAuth = FirebaseAuth.instance;
+final _auth = FirebaseAuth.instance;
+
+dynamic user;
+var userEmail = 'Muzi';
+String userPhoneNumber;
+
+String objj;
+List<CameraDescription> cameras;
+
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+
+  //final cameras = await availableCameras();
+ // final firstCamera = cameras.first;
+
+  await Firebase.initializeApp();
   runApp(MyApp());
+}
+signOut() {
+
+  return _firebaseAuth.signOut();
+}
+Future getCurrentUser() async {
+  return objj = await _firebaseAuth.currentUser.email;
 }
 class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
+
     return MaterialApp(
       debugShowCheckedModeBanner: false,
 
-      home: welcomescreen(),
+      //home: welcomescreen(),
+      initialRoute: MyHomePage.id,
       routes: {
+          MyHomePage.id : (context) => welcomescreen(),
+        'registeruser' : (context) => loginscreen(),
         '/productPage' : (context)=> exercisepage(),
       },
     );
@@ -29,20 +64,39 @@ class MyApp extends StatelessWidget {
 }
 
 class MyHomePage extends StatefulWidget {
+ // final List<CameraDescription> cameras;
+
+  static String id = 'MyHomePage';
   @override
   _MyHomePageState createState() => _MyHomePageState();
 }
 
 class _MyHomePageState extends State<MyHomePage> {
   @override
+
   Widget build(BuildContext context) {
     return Scaffold(
-
       backgroundColor: Color(0xfff8f8f8),
+      appBar: AppBar(
+        backgroundColor: Colors.transparent,
+        elevation: 0,
+        leading: IconButton(
+          padding: EdgeInsets.all(0),
+          onPressed: (){
+            Navigator.push(context,MaterialPageRoute (builder: (_) => profilepage() ));
+          },
+          alignment: Alignment.topRight,
+          iconSize: 50,
+          icon: Icon(Icons.supervised_user_circle_rounded , color: Colors.black,) ,
+
+        ),
+      ),
+      extendBodyBehindAppBar: true,
       body: Stack(
         children: <Widget>[
           Column(
             children: <Widget>[
+
               Container(
                 height: MediaQuery.of(context).size.height*0.43,
                 width: MediaQuery.of(context).size.width,
@@ -51,7 +105,7 @@ class _MyHomePageState extends State<MyHomePage> {
                   image: DecorationImage(
                     image: AssetImage("assets/undraw_pilates_gpdb.png"),
                   )
-                ),
+                 ),
 
 
                 child: Container(
@@ -64,18 +118,22 @@ class _MyHomePageState extends State<MyHomePage> {
               )
             ],
           ),
+
           Column(
             children: <Widget>[
               SizedBox(height: 100,),
               Container(
                 alignment: Alignment.centerLeft,
                 padding: EdgeInsets.all(20),
-                child: Text("Good Morning \nMUZI", style: TextStyle(
+                child: Text("Good Evening \ ${userEmail}", style: TextStyle(
                     fontSize: 40,
                     fontWeight: FontWeight.w700
                 ),),
               ),
+
+
               Container(
+
                 width: MediaQuery.of(context).size.width*0.9,
                 padding: EdgeInsets.symmetric(vertical: 5, horizontal: 20),
                 decoration: BoxDecoration(
@@ -207,4 +265,30 @@ class _MyHomePageState extends State<MyHomePage> {
   {
     Navigator.pushNamed(context, '/productPage', arguments: {'image':'$img', 'title':'$title'});
   }
+  /*void navigateUser() async{
+    final storage = new FlutterSecureStorage();
+
+    String value = await storage.read(key: key);
+    Map<String, String> allValues = await storage.readAll();
+
+    await storage.delete(key: key);
+    await storage.deleteAll();
+
+    await storage.write(key: key, value: value);
+
+    FlutterSecureStorage prefs = await storage.getInstance();
+    var status = prefs.getBool('isLoggedIn') ?? false;
+    print(status);
+    if (status) {
+      Navigator.push(context,MaterialPageRoute (builder: (_) => MyHomePage() ));
+    } else {
+      Navigator.push(context,MaterialPageRoute (builder: (_) => loginscreen() ));
+    }
+  }*/
+
+}class _SecItem {
+  _SecItem(this.key, this.value);
+
+  final String key;
+  final String value;
 }

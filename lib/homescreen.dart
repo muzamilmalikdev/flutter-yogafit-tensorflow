@@ -9,6 +9,7 @@ class homescreen extends StatelessWidget {
     return Scaffold(
 
       backgroundColor: Color(0xfff8f8f8),
+
       body: Stack(
         children: <Widget>[
           Column(

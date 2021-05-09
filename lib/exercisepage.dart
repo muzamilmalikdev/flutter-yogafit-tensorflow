@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:yogafit/loginscreen.dart';
+import 'package:yogafit/virtualtrainer.dart';
 import 'package:yogafit/welcomescreen.dart';
 import 'forgotpassword.dart';
 import 'main.dart';
+import 'package:camera/camera.dart';
+import 'package:yogafit/services/camera.dart';
 
 class exercisepage extends StatelessWidget {
   @override
@@ -11,6 +14,17 @@ class exercisepage extends StatelessWidget {
     return Scaffold(
     
       backgroundColor: Color(0xfff8f8f8),
+      appBar: AppBar(
+        backgroundColor: Colors.transparent,
+        elevation: 0,
+        leading: IconButton(
+          onPressed: (){
+            Navigator.pop(context);
+          },
+          icon: Icon(Icons.arrow_back_ios, color: Colors.black,),
+        ),
+      ),
+      extendBodyBehindAppBar: true,
       body: Stack(
         children: <Widget>[
           Column(
@@ -69,7 +83,7 @@ class exercisepage extends StatelessWidget {
                         // ignore: deprecated_member_use
                         child: FlatButton(
                           onPressed: (){
-                            Navigator.push(context,MaterialPageRoute (builder: (_) => exercisepage() ));
+                            Navigator.push(context,MaterialPageRoute (builder: (_) => virtualtrainer() ));
                           },
                           child: Text("LAUNCH VIRTUAL TRAINER", style: TextStyle(color: Colors.white),),
                         ),
