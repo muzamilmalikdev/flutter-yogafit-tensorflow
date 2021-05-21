@@ -13,7 +13,6 @@ class welcomescreen extends StatelessWidget {
          photoSize: 150.0,
          navigateAfterSeconds: loginscreen(),
          loadingText: Text("YOGA FIT - DAILY"),
-
     );
   }
 }

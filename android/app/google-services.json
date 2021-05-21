@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "26963869961",
+    "firebase_url": "https://yogafit-7c4e2.firebaseio.com",
+    "project_id": "yogafit-7c4e2",
+    "storage_bucket": "yogafit-7c4e2.appspot.com"
+  },
+  "client": [
+    ndroid
+      "client_info": {
+        "mobilesdk_app_id": "1:26963869961:android:f06e7df1f23b952a3053d8",
+        "android_client_info": {
+          "package_name": "com.example.yogafit"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "26963869961-n818krmjplfnto0tvu6ocfqdprem650j.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDlGy_SOI0tQ1bxZsin4AiyiimIj_8bHiI"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "26963869961-n818krmjplfnto0tvu6ocfqdprem650j.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "26963869961-5bti42njlirn0uh8ibb0chc5bfpfif7u.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "MuzamilMalik.YOGAFIT"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

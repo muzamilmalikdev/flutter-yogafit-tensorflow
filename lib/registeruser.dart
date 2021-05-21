@@ -1,14 +1,43 @@
 import 'package:flutter/material.dart';
 import 'package:yogafit/homescreen.dart';
+import 'package:yogafit/loginscreen.dart';
 import 'package:yogafit/main.dart';
 import 'forgotpassword.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'loginscreen.dart';
+import 'package:firebase_database/firebase_database.dart';
 
-class registeruser extends StatelessWidget {
+var uuid;
+
+class registeruser extends StatefulWidget{
+  static const id = 'registeruser';
+  @override
+  _registeruser createState() => _registeruser();
+}
+
+class _registeruser extends State <registeruser> {
+  final _auth = FirebaseAuth.instance;
+  String email;
+  String name;
+  String password;
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+        backgroundColor: Colors.transparent,
+        elevation: 0,
+        leading: IconButton(
+          onPressed: (){
+            Navigator.pop(context);
+          },
+          icon: Icon(Icons.arrow_back_ios, color: Colors.black,),
+        ),
+      ),
+      extendBodyBehindAppBar: true,
       body: Container(
-        width:double.infinity,
+
+       // width:double.infinity,
         decoration: BoxDecoration(
             gradient: LinearGradient(begin: Alignment.topCenter, colors: [
               Colors.orange[500],
@@ -62,8 +91,11 @@ class registeruser extends StatelessWidget {
                                       border: Border(bottom: BorderSide(color: Colors.grey[200]))
                                   ),
                                   child: TextField(
+                                    onChanged: (value){
+                                      name = value;
+                                    },
                                     decoration: InputDecoration(
-                                        hintText: "Email or phone number",
+                                        hintText: "Name",
                                         hintStyle: TextStyle(color: Colors.grey),
                                         border: InputBorder.none
                                     ),
@@ -75,6 +107,27 @@ class registeruser extends StatelessWidget {
                                       border: Border(bottom: BorderSide(color: Colors.grey[200]))
                                   ),
                                   child: TextField(
+                                    onChanged: (value){
+                                      email = value;
+                                    },
+                                    decoration: InputDecoration(
+                                        hintText: "Email or phone number",
+                                        hintStyle: TextStyle(color: Colors.grey),
+                                        border: InputBorder.none
+                                    ),
+                                  ),
+                                ),
+
+                                Container(
+                                  padding: EdgeInsets.all(10),
+                                  decoration: BoxDecoration(
+                                      border: Border(bottom: BorderSide(color: Colors.grey[200]))
+                                  ),
+                                  child: TextField(
+                                    onChanged: (value){
+                                      password = value;
+                                    },
+                                    obscureText: true,
                                     decoration: InputDecoration(
                                         hintText: "Password",
                                         hintStyle: TextStyle(color: Colors.grey),
@@ -97,9 +150,39 @@ class registeruser extends StatelessWidget {
                             ),
 
                             child: Center(
+                              // ignore: deprecated_member_use
                               child: FlatButton(
-                                onPressed: (){
-                                  Navigator.push(context,MaterialPageRoute (builder: (_) => MyHomePage() ));
+                                onPressed: () async{
+                                  try {
+                                    final User newUser  = (await _auth
+                                        .createUserWithEmailAndPassword(
+                                        email: email, password: password).catchError((ex){
+                                          FirebaseAuthException thisex = ex;
+                                    })).user;
+                                  setState(() {
+                                    uuid = newUser.uid;
+                                  });
+                                    Navigator.pop(context);
+
+                                    Map userMap = {
+                                      'fullname': name,
+                                      'email': email,
+                                      //'Phone': phoneController.text,
+                                    };
+
+                                    DatabaseReference dRef = FirebaseDatabase.instance.reference().child('Users/${newUser.uid}');
+
+                                    dRef.set(userMap);
+                                    //newUserRef.set(userMap);
+                                    if(newUser != null)
+                                      {
+                                        Navigator.push(context,MaterialPageRoute (builder: (_) => loginscreen() ));
+                                      }
+                                  }
+                                  catch(e){
+                                    print(e);
+                                  }
+
                                 },
                                 child: Text("Register", style: TextStyle(color: Colors.white),),
                               ),
