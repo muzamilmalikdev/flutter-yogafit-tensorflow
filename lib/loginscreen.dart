@@ -10,6 +10,11 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:yogafit/services/auth_service.dart';
 final FirebaseAuth _firebaseAuth = FirebaseAuth.instance;
 
+void getuid() {
+  final User user = _firebaseAuth.currentUser;
+  currentuser = user.uid;
+}
+ var currentuser;
 class loginscreen extends StatefulWidget {
   @override
   _loginscreenState createState() => _loginscreenState();
@@ -49,7 +54,6 @@ class _loginscreenState extends State<loginscreen> {
  final _auth = FirebaseAuth.instance;
   String email;
   String password;
-
 
 
 
@@ -172,13 +176,16 @@ class _loginscreenState extends State<loginscreen> {
                           SizedBox(height: 40,),
                           GestureDetector( child : Text("Forget Password?", style: TextStyle(color: Colors.grey),),
                             onTap: () {
+                            if(email == null){ _showMyDialog("Enter email above") ;}
+                            else
                               _firebaseAuth.sendPasswordResetEmail(email: email);
+                            _showMyDialog("Email with the instruction has been sent to your email adress: $email");
                             },
                           ),
 
                           SizedBox(height: 40,),
                           Container(
-                            height: 50,
+                            width: 250,
                             margin: EdgeInsets.symmetric(horizontal:50),
                             decoration: BoxDecoration(
                                 borderRadius: BorderRadius.circular(50),
@@ -187,12 +194,15 @@ class _loginscreenState extends State<loginscreen> {
                             child: Center(
                               // ignore: deprecated_member_use
                               child: FlatButton(
-                                onPressed: ()
-                                  async{
+                                onPressed: () async{
                                     try {
-                                      UserCredential userCredential = await FirebaseAuth.instance.signInWithEmailAndPassword(email: email,
-                                          password: password,
-                                      );
+                                   final UserCredential userCredential =( await FirebaseAuth.instance.signInWithEmailAndPassword(email: email,
+                                          password: password,).catchError((ex){
+                                     FirebaseAuthException thisex = ex;
+                                   }));
+                                   getuid();
+                                  // print("${currentuser}");
+                                     // currentuser = userCredential;
                                       if (userCredential != null) {
                                         Navigator.pushAndRemoveUntil( context, MaterialPageRoute(builder: (context) => MyHomePage()), (Route<dynamic> route) => false, );
                                       }

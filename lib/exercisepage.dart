@@ -8,6 +8,9 @@ import 'package:camera/camera.dart';
 import 'package:yogafit/services/camera.dart';
 
 class exercisepage extends StatelessWidget {
+  final String image;
+  final String title;
+  exercisepage({this.image, this.title});
   @override
   Widget build(BuildContext context) {
     var size = MediaQuery.of(context).size;
@@ -52,7 +55,7 @@ class exercisepage extends StatelessWidget {
                 height: 130,
                 alignment: Alignment.centerLeft,
                 padding: EdgeInsets.all(20),
-                child: Text(" PLANK \n ARM POSE", style: TextStyle(
+                child: Text(" ${title}", style: TextStyle(
                     fontSize: 40,
                     fontWeight: FontWeight.w700
                 ),),
@@ -62,7 +65,7 @@ class exercisepage extends StatelessWidget {
                   decoration: BoxDecoration(
                    image: DecorationImage(
                     // alignment: Alignment.centerRight,
-                   image: AssetImage("assets/plankgif.gif"),
+                   image: AssetImage("${image}"),
                      alignment: Alignment.center,
                    )
                ),

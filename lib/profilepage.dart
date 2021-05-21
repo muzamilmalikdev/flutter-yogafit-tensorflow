@@ -1,6 +1,7 @@
 import 'dart:ui';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/foundation.dart';
 import 'package:splashscreen/splashscreen.dart';
 import 'package:flutter/material.dart';
@@ -16,9 +17,12 @@ import 'package:yogafit/exercisepage.dart';
 import 'package:yogafit/provider.dart';
 import 'package:intl/intl.dart';
 import 'services/auth_service.dart';
+import 'registeruser.dart';
 
 final FirebaseAuth _firebaseAuth = FirebaseAuth.instance;
 String obj;
+String email;
+String gender = "male";
 final AuthService _authService = AuthService();
 int age = 18;
 signOut() {
@@ -30,6 +34,17 @@ class profilepage extends StatefulWidget {
 }
 
 class _profilepageState extends State<profilepage> {
+  @override
+  void initState() {
+    FirebaseDatabase.instance.reference().child('Users/${currentuser}').once().then((DataSnapshot snapshot) {
+      setState(() {
+        name = snapshot.value['fullname'];
+        email = snapshot.value["email"];
+        print("$email");
+      });
+    });
+    super.initState();
+  }
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -95,9 +110,9 @@ class _profilepageState extends State<profilepage> {
              child: Column(
                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                children: [
-                 Textfield(hintText: "Email $obj"),
-                 Textfield(hintText: "Gender"),
-                 Textfield(hintText: "Age : $age"),
+                 Textfield(hintText: "Email: ${email}"),
+                 Textfield(hintText: "Gender:"),
+                 Textfield(hintText: "Age : "),
                  Textfield(hintText: "Workout"),
                ],
              ),
@@ -112,9 +127,15 @@ class _profilepageState extends State<profilepage> {
               // ignore: deprecated_member_use
               child: FlatButton(
                 onPressed: () async {
-                  await _firebaseAuth.signOut().then((result) {
-                    Navigator.of(context).pop(true);
-                  });
+                  Map userMap = {
+                    'fullname': name,
+                    'email': email,
+                    'gender' : gender,
+                    //'Phone': phoneController.text,
+                  };
+
+                  DatabaseReference dRef = FirebaseDatabase.instance.reference().child('Users/${currentuser.user.uid}');
+                  dRef.set(userMap);
                 },
                 child: Text("Update Profile", style: TextStyle(color: Colors.white),),
 
@@ -129,9 +150,11 @@ class _profilepageState extends State<profilepage> {
                   color: Colors.orange[800]
               ),
               // ignore: deprecated_member_use
-              child: FlatButton(
-                onPressed: (){
-
+              child: TextButton(
+                onPressed: () async {
+                  await _firebaseAuth.signOut().then((result) {
+                    Navigator.pushAndRemoveUntil( context, MaterialPageRoute(builder: (context) => loginscreen()), (Route<dynamic> route) => false, );
+                  });
                 },
                 child: Text("LogOut", style: TextStyle(color: Colors.white),),
 
@@ -183,7 +206,7 @@ Widget Textfield({@required String hintText}){
        decoration: InputDecoration(
          hintText: hintText ,
          hintStyle: TextStyle(
-           letterSpacing: 2,
+        //   letterSpacing: 1,
            color: Colors.black,
            fontWeight: FontWeight.bold,
          ),

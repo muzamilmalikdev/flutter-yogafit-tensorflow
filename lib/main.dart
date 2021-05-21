@@ -1,6 +1,7 @@
 import 'dart:ui';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/foundation.dart';
 import 'package:splashscreen/splashscreen.dart';
 import 'package:flutter/material.dart';
@@ -17,13 +18,14 @@ import 'package:camera/camera.dart';
 import 'package:yogafit/exercisepage.dart';
 import 'package:yogafit/virtualtrainer.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
-
+import 'registeruser.dart';
 
 final FirebaseAuth _firebaseAuth = FirebaseAuth.instance;
 final _auth = FirebaseAuth.instance;
+String name;
 
 dynamic user;
-var userEmail = 'Muzi';
+//var userEmail = objj;
 String userPhoneNumber;
 
 String objj;
@@ -43,8 +45,11 @@ signOut() {
   return _firebaseAuth.signOut();
 }
 Future getCurrentUser() async {
-  return objj = await _firebaseAuth.currentUser.email;
+  return objj = await currentuser.email;
+
 }
+
+
 class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
@@ -69,9 +74,26 @@ class MyHomePage extends StatefulWidget {
   static String id = 'MyHomePage';
   @override
   _MyHomePageState createState() => _MyHomePageState();
-}
 
+}
 class _MyHomePageState extends State<MyHomePage> {
+
+  @override
+  void initState() {
+
+   // print("${currentuser.user.uid}");
+    String demo = FirebaseAuth.instance.currentUser.uid;
+   // print("${demo}");
+    FirebaseDatabase.instance.reference().child('Users/${currentuser}').once().then((DataSnapshot snapshot) {
+
+     setState(() {
+       name = snapshot.value['fullname'];
+       //email = snapshot.value["email"];
+     });
+    });
+    super.initState();
+  }
+
   @override
 
   Widget build(BuildContext context) {
@@ -125,7 +147,7 @@ class _MyHomePageState extends State<MyHomePage> {
               Container(
                 alignment: Alignment.centerLeft,
                 padding: EdgeInsets.all(20),
-                child: Text("Good Evening \ ${userEmail}", style: TextStyle(
+                child: Text("Good Evening \ ${name}", style: TextStyle(
                     fontSize: 40,
                     fontWeight: FontWeight.w700
                 ),),
@@ -168,18 +190,31 @@ class _MyHomePageState extends State<MyHomePage> {
                       title: "Tree",
                       imagesrc: "assets/tree.png",
                       press: () {
-
+                        String image = "assets/tree.png";
+                        String Title = "Tree \n Yoga Pose";
+                        //openExercisePage("plankgif.gif", "Plank yoga");
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => exercisepage(
+                                image: image, title: Title,
+                              )),
+                        );
                       },
                     ),
                     CategoryCard(
                       title: "Plank",
                       imagesrc: "assets/plank.png",
                       press: () {
+                        String image = "assets/plankgif.gif";
+                       String Title = "Plank \n ArmPose";
+                        //openExercisePage("plankgif.gif", "Plank yoga");
                         Navigator.push(
                           context,
-                          MaterialPageRoute(builder: (context) {
-                            return exercisepage();
-                          }),
+                          MaterialPageRoute(
+                              builder: (context) => exercisepage(
+                                image: image, title: Title,
+                              )),
                         );
                       },
                     ),
@@ -187,6 +222,15 @@ class _MyHomePageState extends State<MyHomePage> {
                       title: "Warrior",
                       imagesrc: "assets/warrior.png",
                       press: () {
+                        String image = "assets/warrior.png";
+                        String Title = "Warrior \n Streachable";
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => exercisepage(
+                               image: image, title: Title,
+                              )),
+                        );
 
                       },
                     ),
@@ -194,11 +238,19 @@ class _MyHomePageState extends State<MyHomePage> {
                       title: "DownDog",
                       imagesrc: "assets/downdog2.png",
                       press: () {
+                       String image = "assets/downdog2.png";
+                        String Title = "DownDog \n Streachable";
+                        //data;
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => exercisepage(
+                                image: image, title: Title,
+                              )),
+                        );
 
                       },
                     ),
-
-
                     //categoryWidget('tree', "Tree"),
 
                   ],
